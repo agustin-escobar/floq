@@ -6,12 +6,20 @@ export default function Nav() {
           <span className="text-2xl">🌿</span>
           <span className="font-bold text-xl text-gray-900 tracking-tight">Floq</span>
         </div>
-        <a
-          href="#waitlist"
-          className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-        >
-          Acceso anticipado
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href="/demo"
+            className="text-sm font-medium text-green-700 hover:text-green-900 transition-colors"
+          >
+            Ver demo →
+          </a>
+          <a
+            href="#waitlist"
+            className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            Acceso anticipado
+          </a>
+        </div>
       </div>
     </nav>
   );
