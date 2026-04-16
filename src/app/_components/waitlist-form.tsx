@@ -30,12 +30,26 @@ const COMPANY_SIZES = [
   { value: "500+", label: "Más de 500 animales" },
 ];
 
+const CHILE_REGIONS = [
+  "Los Lagos",
+  "Biobío",
+  "Araucanía",
+  "Los Ríos",
+  "Maule",
+  "Ñuble",
+  "O'Higgins",
+  "Metropolitana",
+  "Otra región",
+];
+
 export default function WaitlistForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phone: "",
     companySize: "",
     country: "",
+    region: "",
   });
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState("");
@@ -43,7 +57,12 @@ export default function WaitlistForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "country" && value !== "Chile" ? { region: "" } : {}),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,8 +84,10 @@ export default function WaitlistForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
+          "WhatsApp / Teléfono": form.phone,
           "Tamaño del rebaño": form.companySize,
           País: form.country,
+          ...(form.region ? { Región: form.region } : {}),
         }),
       });
 
@@ -130,6 +151,22 @@ export default function WaitlistForm() {
         </div>
       </div>
 
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+          WhatsApp / Teléfono
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          required
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="+56 9 1234 5678"
+          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+        />
+      </div>
+
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="companySize" className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -176,6 +213,31 @@ export default function WaitlistForm() {
           </select>
         </div>
       </div>
+
+      {form.country === "Chile" && (
+        <div>
+          <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1.5">
+            Región
+          </label>
+          <select
+            id="region"
+            name="region"
+            required={form.country === "Chile"}
+            value={form.region}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-white appearance-none"
+          >
+            <option value="" disabled>
+              Selecciona tu región
+            </option>
+            {CHILE_REGIONS.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {error && (
         <p className="text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-4 py-3">
