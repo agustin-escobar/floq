@@ -9,18 +9,8 @@ const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ID
   : null;
 
 const LATAM_COUNTRIES = [
-  "Chile",
-  "Argentina",
-  "Brasil",
-  "Colombia",
-  "México",
-  "Perú",
-  "Uruguay",
-  "Ecuador",
-  "Bolivia",
-  "Paraguay",
-  "Venezuela",
-  "Otro",
+  "Chile", "Argentina", "Brasil", "Colombia", "México",
+  "Perú", "Uruguay", "Ecuador", "Bolivia", "Paraguay", "Venezuela", "Otro",
 ];
 
 const COMPANY_SIZES = [
@@ -31,32 +21,69 @@ const COMPANY_SIZES = [
 ];
 
 const CHILE_REGIONS = [
-  "Los Lagos",
-  "Biobío",
-  "Araucanía",
-  "Los Ríos",
-  "Maule",
-  "Ñuble",
-  "O'Higgins",
-  "Metropolitana",
-  "Otra región",
+  "Los Lagos", "Biobío", "Araucanía", "Los Ríos", "Maule",
+  "Ñuble", "O'Higgins", "Metropolitana", "Otra región",
 ];
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "10px 12px",
+  borderRadius: "var(--radius-md)",
+  border: "1px solid var(--floq-cloud)",
+  background: "var(--floq-white)",
+  color: "var(--floq-ink)",
+  fontSize: "0.875rem",
+  fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
+  outline: "none",
+  transition: "border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)",
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: "0.75rem",
+  fontWeight: 600,
+  color: "var(--floq-pine)",
+  letterSpacing: "0.02em",
+  marginBottom: "6px",
+};
+
+function Field({
+  id,
+  label,
+  children,
+}: {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} style={labelStyle}>
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function focusInput(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+  e.currentTarget.style.borderColor = "var(--floq-grass)";
+  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(39,103,63,0.22)";
+}
+
+function blurInput(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+  e.currentTarget.style.borderColor = "var(--floq-cloud)";
+  e.currentTarget.style.boxShadow = "none";
+}
 
 export default function WaitlistForm() {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    companySize: "",
-    country: "",
-    region: "",
+    name: "", email: "", phone: "", companySize: "", country: "", region: "",
   });
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -71,7 +98,6 @@ export default function WaitlistForm() {
     setError("");
 
     if (!FORMSPREE_ENDPOINT) {
-      // Dev mode: simulate success
       await new Promise((r) => setTimeout(r, 800));
       setState("success");
       return;
@@ -90,7 +116,6 @@ export default function WaitlistForm() {
           ...(form.region ? { Región: form.region } : {}),
         }),
       });
-
       if (res.ok) {
         setState("success");
       } else {
@@ -104,12 +129,26 @@ export default function WaitlistForm() {
 
   if (state === "success") {
     return (
-      <div className="text-center py-16">
-        <div className="text-6xl mb-6">🎉</div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-3">
+      <div className="text-center py-12">
+        <div
+          className="w-16 h-16 mx-auto mb-6 flex items-center justify-center"
+          style={{
+            background: "var(--floq-mist)",
+            borderRadius: "var(--radius-full)",
+            color: "var(--floq-grass)",
+          }}
+        >
+          <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </div>
+        <h3
+          className="type-heading text-2xl mb-3"
+          style={{ color: "var(--floq-pine)" }}
+        >
           ¡Estás en la lista!
         </h3>
-        <p className="text-gray-600 max-w-md mx-auto">
+        <p style={{ color: "var(--floq-slate)" }} className="max-w-sm mx-auto leading-relaxed">
           Te contactaremos pronto con los detalles del acceso anticipado. Primeros 50 productores tienen acceso gratuito.
         </p>
       </div>
@@ -119,128 +158,91 @@ export default function WaitlistForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Nombre completo
-          </label>
+        <Field id="name" label="Nombre completo">
           <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            value={form.name}
-            onChange={handleChange}
+            id="name" name="name" type="text" required
+            value={form.name} onChange={handleChange}
             placeholder="Juan Pérez"
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            style={inputStyle}
+            onFocus={focusInput} onBlur={blurInput}
           />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Correo electrónico
-          </label>
+        </Field>
+        <Field id="email" label="Correo electrónico">
           <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={form.email}
-            onChange={handleChange}
+            id="email" name="email" type="email" required
+            value={form.email} onChange={handleChange}
             placeholder="juan@predio.cl"
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            style={inputStyle}
+            onFocus={focusInput} onBlur={blurInput}
           />
-        </div>
+        </Field>
       </div>
 
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
-          WhatsApp / Teléfono
-        </label>
+      <Field id="phone" label="WhatsApp / Teléfono">
         <input
-          id="phone"
-          name="phone"
-          type="tel"
-          required
-          value={form.phone}
-          onChange={handleChange}
+          id="phone" name="phone" type="tel" required
+          value={form.phone} onChange={handleChange}
           placeholder="+56 9 1234 5678"
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          style={inputStyle}
+          onFocus={focusInput} onBlur={blurInput}
         />
-      </div>
+      </Field>
 
       <div className="grid sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="companySize" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Tamaño del rebaño
-          </label>
+        <Field id="companySize" label="Tamaño del rebaño">
           <select
-            id="companySize"
-            name="companySize"
-            required
-            value={form.companySize}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-white appearance-none"
+            id="companySize" name="companySize" required
+            value={form.companySize} onChange={handleChange}
+            style={{ ...inputStyle, appearance: "none" as const, cursor: "pointer" }}
+            onFocus={focusInput} onBlur={blurInput}
           >
-            <option value="" disabled>
-              Selecciona un rango
-            </option>
+            <option value="" disabled>Selecciona un rango</option>
             {COMPANY_SIZES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
+              <option key={s.value} value={s.value}>{s.label}</option>
             ))}
           </select>
-        </div>
-        <div>
-          <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1.5">
-            País
-          </label>
+        </Field>
+        <Field id="country" label="País">
           <select
-            id="country"
-            name="country"
-            required
-            value={form.country}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-white appearance-none"
+            id="country" name="country" required
+            value={form.country} onChange={handleChange}
+            style={{ ...inputStyle, appearance: "none" as const, cursor: "pointer" }}
+            onFocus={focusInput} onBlur={blurInput}
           >
-            <option value="" disabled>
-              Selecciona tu país
-            </option>
+            <option value="" disabled>Selecciona tu país</option>
             {LATAM_COUNTRIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
-        </div>
+        </Field>
       </div>
 
       {form.country === "Chile" && (
-        <div>
-          <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Región
-          </label>
+        <Field id="region" label="Región">
           <select
-            id="region"
-            name="region"
-            required={form.country === "Chile"}
-            value={form.region}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-white appearance-none"
+            id="region" name="region" required={form.country === "Chile"}
+            value={form.region} onChange={handleChange}
+            style={{ ...inputStyle, appearance: "none" as const, cursor: "pointer" }}
+            onFocus={focusInput} onBlur={blurInput}
           >
-            <option value="" disabled>
-              Selecciona tu región
-            </option>
+            <option value="" disabled>Selecciona tu región</option>
             {CHILE_REGIONS.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
+              <option key={r} value={r}>{r}</option>
             ))}
           </select>
-        </div>
+        </Field>
       )}
 
       {error && (
-        <p className="text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-4 py-3">
+        <p
+          className="text-sm px-4 py-3"
+          style={{
+            color: "var(--floq-status-critical)",
+            background: "#FAE5E5",
+            border: "1px solid #F8CECE",
+            borderRadius: "var(--radius-md)",
+          }}
+        >
           {error}
         </p>
       )}
@@ -248,12 +250,31 @@ export default function WaitlistForm() {
       <button
         type="submit"
         disabled={state === "submitting"}
-        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold text-lg py-4 rounded-xl transition-all hover:shadow-lg disabled:cursor-not-allowed"
+        className="w-full font-semibold text-base text-white transition-all"
+        style={{
+          background: state === "submitting" ? "var(--floq-moss)" : "var(--floq-grass)",
+          borderRadius: "var(--radius-md)",
+          padding: "13px 24px",
+          cursor: state === "submitting" ? "not-allowed" : "pointer",
+          transition: "background var(--duration-fast) var(--ease-out)",
+          border: "none",
+        }}
+        onMouseOver={(e) => {
+          if (state !== "submitting")
+            e.currentTarget.style.background = "#1E5430";
+        }}
+        onMouseOut={(e) => {
+          if (state !== "submitting")
+            e.currentTarget.style.background = "var(--floq-grass)";
+        }}
       >
         {state === "submitting" ? "Enviando..." : "Solicitar acceso anticipado →"}
       </button>
 
-      <p className="text-center text-xs text-gray-400">
+      <p
+        className="text-center text-xs"
+        style={{ color: "var(--floq-fog)" }}
+      >
         Sin spam. Solo actualizaciones de Floq. Cancela cuando quieras.
       </p>
     </form>

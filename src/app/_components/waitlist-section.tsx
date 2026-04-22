@@ -2,21 +2,45 @@ import WaitlistForm from "./waitlist-form";
 
 export default function WaitlistSection() {
   return (
-    <section id="waitlist" className="py-24 px-4 bg-gradient-to-br from-green-50 to-emerald-50">
+    <section
+      id="waitlist"
+      className="py-24 px-4"
+      style={{ background: "var(--floq-mist)" }}
+    >
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-12">
-          <span className="text-green-600 font-semibold text-sm uppercase tracking-widest">
+          <span
+            className="text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--floq-grass)", letterSpacing: "0.1em" }}
+          >
             Acceso anticipado
           </span>
-          <h2 className="mt-4 text-4xl sm:text-5xl font-bold text-gray-900">
+          <h2
+            className="type-heading mt-4"
+            style={{
+              color: "var(--floq-ink)",
+              fontSize: "clamp(2rem, 5vw, 2.8rem)",
+            }}
+          >
             Sé el primero en el campo
           </h2>
-          <p className="mt-4 text-gray-600 text-lg leading-relaxed">
-            Estamos lanzando en Chile en 2026. Los primeros 50 productores tendrán acceso gratuito y ayudarán a moldear el producto.
+          <p
+            className="mt-4 text-lg leading-relaxed"
+            style={{ color: "var(--floq-slate)" }}
+          >
+            Lanzamos en Chile en 2026. Los primeros 50 productores tendrán acceso gratuito y ayudarán a moldear el producto.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-green-100 p-8 sm:p-10">
+        <div
+          className="p-8 sm:p-10"
+          style={{
+            background: "var(--floq-white)",
+            borderRadius: "var(--radius-xl)",
+            border: "1px solid var(--floq-cloud)",
+            boxShadow: "var(--shadow-md)",
+          }}
+        >
           <WaitlistForm />
         </div>
       </div>

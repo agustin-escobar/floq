@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto_Flex, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const robotoFlex = Roboto_Flex({
   subsets: ["latin"],
+  axes: ["wdth", "opsz"],
+  variable: "--font-roboto-flex",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -25,8 +34,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.className} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-gray-900">
+    <html
+      lang="es"
+      className={`${robotoFlex.variable} ${dmSans.variable} h-full`}
+    >
+      <body className="min-h-full flex flex-col">
         {children}
       </body>
     </html>

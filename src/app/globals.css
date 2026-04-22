@@ -1,15 +1,179 @@
 @import "tailwindcss";
 
+/* ─── FLOQ DESIGN TOKENS ──────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
+  /* Greens — The Land */
+  --floq-leaf:    #0F2318;
+  --floq-pine:    #1A3D29;
+  --floq-grass:   #27673F;
+  --floq-moss:    #3E8E5E;
+  --floq-sprout:  #72BB91;
+  --floq-meadow:  #B2D9C2;
+  --floq-mist:    #E6F2EC;
+
+  /* Ambers — Sun, Health, Alerts */
+  --floq-ember:   #9E4E00;
+  --floq-amber:   #D97706;
+  --floq-honey:   #F5B942;
+  --floq-cream:   #FEF3DC;
+
+  /* Neutrals */
+  --floq-dark:    #0D1612;
+  --floq-ink:     #1C2B21;
+  --floq-slate:   #4A5E53;
+  --floq-fog:     #8A9E93;
+  --floq-cloud:   #D4E2DA;
+  --floq-paper:   #F3F7F5;
+  --floq-chalk:   #F9FBFA;
+  --floq-white:   #FFFFFF;
+
+  /* Status */
+  --floq-status-healthy:  #27673F;
+  --floq-status-warning:  #D97706;
+  --floq-status-critical: #C43C3C;
+  --floq-status-inactive: #8A9E93;
+  --floq-status-info:     #1E6FA8;
+
+  /* Spacing */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;
+  --space-4: 16px;  --space-5: 20px;  --space-6: 24px;
+  --space-8: 32px;  --space-10: 40px; --space-12: 48px;
+  --space-16: 64px; --space-20: 80px; --space-24: 96px;
+
+  /* Radius */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(15,35,24,0.06);
+  --shadow-sm: 0 2px 6px rgba(15,35,24,0.08), 0 1px 2px rgba(15,35,24,0.04);
+  --shadow-md: 0 4px 16px rgba(15,35,24,0.10), 0 2px 4px rgba(15,35,24,0.06);
+  --shadow-lg: 0 8px 32px rgba(15,35,24,0.12), 0 4px 8px rgba(15,35,24,0.08);
+  --shadow-xl: 0 16px 48px rgba(15,35,24,0.16), 0 8px 16px rgba(15,35,24,0.08);
+  --shadow-focus: 0 0 0 3px rgba(39,103,63,0.28);
+
+  /* Motion */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 380ms;
+}
+
+/* ─── TAILWIND v4 THEME ─────────────────────────────────────────── */
+@theme inline {
+  /* Colors */
+  --color-floq-leaf:    var(--floq-leaf);
+  --color-floq-pine:    var(--floq-pine);
+  --color-floq-grass:   var(--floq-grass);
+  --color-floq-moss:    var(--floq-moss);
+  --color-floq-sprout:  var(--floq-sprout);
+  --color-floq-meadow:  var(--floq-meadow);
+  --color-floq-mist:    var(--floq-mist);
+  --color-floq-ember:   var(--floq-ember);
+  --color-floq-amber:   var(--floq-amber);
+  --color-floq-honey:   var(--floq-honey);
+  --color-floq-cream:   var(--floq-cream);
+  --color-floq-dark:    var(--floq-dark);
+  --color-floq-ink:     var(--floq-ink);
+  --color-floq-slate:   var(--floq-slate);
+  --color-floq-fog:     var(--floq-fog);
+  --color-floq-cloud:   var(--floq-cloud);
+  --color-floq-paper:   var(--floq-paper);
+  --color-floq-chalk:   var(--floq-chalk);
+
+  /* Fonts — set by layout.tsx via next/font variables */
+  --font-display: var(--font-roboto-flex), 'Roboto Flex', 'Inter', sans-serif;
+  --font-body:    var(--font-dm-sans), 'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+/* ─── COMPONENT HOVER UTILITIES ──────────────────────────────────── */
+.nav-demo-link { color: var(--floq-grass); transition: color var(--duration-fast) var(--ease-out); }
+.nav-demo-link:hover { color: var(--floq-pine); }
+
+.nav-cta {
+  background: var(--floq-grass);
+  color: #fff;
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.nav-cta:hover { background: #1E5430; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--floq-grass);
+  border-radius: var(--radius-md);
+  padding: 14px 28px;
+  box-shadow: var(--shadow-md);
+  transition: background var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.btn-primary:hover {
+  background: #1E5430;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.problem-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-base) var(--ease-out),
+              background var(--duration-base) var(--ease-out);
+}
+.problem-card:hover {
+  border-color: rgba(114,187,145,0.3);
+  background: rgba(255,255,255,0.06);
+}
+
+.solution-card {
+  background: var(--floq-white);
+  border: 1px solid var(--floq-cloud);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.solution-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ─── BASE STYLES ───────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--floq-chalk);
+  color: var(--floq-ink);
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Display / Heading role — Roboto Flex with variation settings */
+.type-display {
+  font-family: var(--font-roboto-flex), 'Roboto Flex', sans-serif;
+  font-weight: 800;
+  line-height: 0.92;
+  font-variation-settings: 'wdth' 75, 'opsz' 144;
+}
+
+.type-heading {
+  font-family: var(--font-roboto-flex), 'Roboto Flex', sans-serif;
+  font-weight: 700;
+  line-height: 1.05;
+  font-variation-settings: 'wdth' 85, 'opsz' 32;
 }
