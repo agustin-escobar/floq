@@ -44,9 +44,6 @@ export default function Nav() {
         </a>
 
         <div className="flex items-center gap-2">
-          <a href="/demo" className="nav-demo-link text-sm font-semibold px-4 py-2 rounded-lg">
-            Ver demo →
-          </a>
           <a href="#waitlist" className="nav-cta text-sm font-semibold px-4 py-2">
             Acceso anticipado
           </a>
